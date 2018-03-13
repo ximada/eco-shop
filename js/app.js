@@ -1,21 +1,3 @@
-//Add the car
-const addProducts = document.getElementById('products');
-
- addCar = ()=> {
-    e.preventDefaul();
-     
-    if(e.target.classList.contains('add-car')){
-         const product = e.target.parentElement.parentElement;
-
-
-    }
-}
-
-addProductsCar = (addProducts)=>{
-    
-
-}
-
 
 const container = document.getElementById('container');
 window.addEventListener('load', () => {
@@ -30,6 +12,7 @@ getJson = (e) => {
                 fetch('https://api.mercadolibre.com/sites/MLM/search?q=sustentable').then(response => {
                     response.json().then(Json => {
                         paintDataJson(json, Json)
+                        console.log(json)
                     })
                 })
             })
@@ -60,12 +43,14 @@ paintDataJson = (json, Json) => {
                              <i class="fas fa-eye elements-data" data-price="${element.price}" data-title="${element.title}" data-img="${element.thumbnail}" data-id="${element.id}" data-rating="${element.reviews.rating_average}" data-state="${element.address.state_name}"></i>
                         </a>  
 
-                    <div class="buttonShop">Comprar</div>
+                    <button  class="buttonShop add-click"  data-id=${element.id} data-price="${element.price} data-title="${element.title} ">Add cart</button>
                     </div>
                 </div>
+      
             `
             container.insertAdjacentHTML('beforeend', output);
         }
+        
     })
 
     productsResultsSust.forEach((element, index) => {
@@ -81,7 +66,7 @@ paintDataJson = (json, Json) => {
                         <div class="text">${element.title}</div>
                         <div class="price">$${element.price} mxn</div>
                         <a href="#modal" data-toggle="modal" type="button" class="btn btn-outline-info elements-data border-0" data-price="${element.price}" data-title="${element.title}" data-img="${element.thumbnail}" data-id="${element.id}" data-rating="${element.reviews.rating_average}" data-state="${element.address.state_name}">
-                             <i class="fas fa-eye elements-data" data-price="${element.price}" data-title="${element.title}" data-img="${element.thumbnail}" data-id="${element.id}" data-rating="${element.reviews.rating_average}" data-state="${element.address.state_name}"></i>
+                             <i class="fas fa-eye elements-data" data-price="${element.price}" data-title="${element.title}" data-image="${element.thumbnail}" data-id="${element.id}" data-rating="${element.reviews.rating_average}" data-state="${element.address.state_name}"></i>
                         </a> 
 
                        
@@ -96,12 +81,17 @@ paintDataJson = (json, Json) => {
 
     let elementsData = document.getElementsByClassName('elements-data');
     elementEvent(elementsData);
+    let buttonAddCart = document.getElementsByClassName('add-click');
+    //console.log(buttonAddCart)
+    coverToArra(buttonAddCart);
+    
+    
 }
 
 
+
 elementEvent = (elementsData) => {    
-    let elementsEvents = Array.from(elementsData);  
-    
+    let elementsEvents = Array.from(elementsData); 
     elementsEvents.forEach(button => {                   
         button.addEventListener('click', getInfo);
 
@@ -147,6 +137,80 @@ paintInfoModal = (img, title, rating, state, description, price) => {
     `;
 }
 
+//convetir  coleccion html en array 
+ coverToArra = (buttonAddCart)=> {
+     let addItemsId = Array.from(buttonAddCart);
+    //  console.log(addItemsId);
+     addItemsId.forEach(item =>{
+         item.addEventListener('click',getInfoArray);
+         item.addEventListener('click',addItems);
+         chageButtonStatus(item);
+     })
+     
+ }
 
 
->>>>>>> upstream/master
+getInfoArray= (e) =>{
+    e.preventDefault();
+    
+    const imageCheck =e.target.dataset.image;
+    const titleCheck = e.target.dataset.title;
+    const priceCheck = e.target.dataset.price;
+    
+    //addCart(imageCheck, titleCheck, priceCheck)
+}
+ 
+// let arrayProducts=[];
+// addToCart =(item)=>{
+//     console.log(item);
+//     if(buttonAddCart.classList.contains('clicked')==false){
+// //         addItems();
+// //         chageButtonStatus(buttonAddCart,false);
+// // }
+// }
+
+
+addCartPaint =(imageCheck, titleCheck,priceCheck)=>{
+    //hacer el template y llalmar funcion de aumentar el contador 
+    
+}
+
+addItems = () => {
+    let counterItems = parseInt(document.getElementById('counter-items').textContent);
+    
+    let counter = document.getElementById('counter-items');
+    counterItems += 1
+    console.log(counter)
+    
+    counter.innerHTML = counterItems;
+    let eventBtn = event.target;
+    chageButtonStatus(eventBtn);
+    
+
+}
+
+
+removeItems = () => {
+    let counterItems = parseInt(document.getElementById('counter-items').textContent);
+    let counter = document.getElementById('counter-items');
+    counterItems -= 1
+    counter.innerHTML = counterItems;
+
+}
+
+chageButtonStatus =(item)=>{
+    console.log(item.innerText);
+    
+    if(item.innerText == 'Add cart'){
+        item.innerText=='Remove cart';
+    }else {
+        item.innerText == 'Add cart';
+        
+    }
+
+}
+
+
+
+
+
